@@ -1,13 +1,42 @@
 import React from 'react';
-import { Shield, Zap, Gamepad2, Headphones, Rocket, Send, CheckCircle2, Menu, X, Activity } from 'lucide-react';
+import { Shield, Zap, Gamepad2, Headphones, Rocket, Send, CheckCircle2, Menu, X, Activity, Globe, Megaphone } from 'lucide-react';
 
-const TELEGRAM_LINK = "https://t.me/ArtiqVPN_Bot";
+// Using tg:// to directly open the app and bypass browser filtering in Iran
+const BOT_LINK = "tg://resolve?domain=ArtiqVPN_Bot";
+const CHANNEL_LINK = "tg://resolve?domain=ArtiqVPN";
+
+const multiLocations = [
+  { id: 'se', name: 'سوئد' }, { id: 'nl', name: 'هلند' }, { id: 'gb', name: 'انگلیس' },
+  { id: 'ch', name: 'سوئیس' }, { id: 'fr', name: 'فرانسه' }, { id: 'de', name: 'آلمان' },
+  { id: 'es', name: 'اسپانیا' }, { id: 'fi', name: 'فنلاند' }, { id: 'tr', name: 'ترکیه' },
+  { id: 'vn', name: 'ویتنام' }, { id: 'ro', name: 'رومانی' }, { id: 'it', name: 'ایتالیا' },
+  { id: 'us', name: 'آمریکا' }, { id: 'ca', name: 'کانادا' }, { id: 'at', name: 'اتریش' },
+  { id: 'ae', name: 'امارات' }, { id: 'al', name: 'آلبانی' }, { id: 'ua', name: 'اوکراین' },
+  { id: 'in', name: 'هند' }, { id: 'au', name: 'استرالیا' }, { id: 'hk', name: 'هنگ کنگ' },
+  { id: 'jp', name: 'ژاپن' }, { id: 'id', name: 'اندونزی' }, { id: 'sg', name: 'سنگاپور' }
+];
+
+const twoLocations = [{ id: 'de', name: 'آلمان' }, { id: 'nl', name: 'هلند' }];
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
       <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500/30">
+
+        {/* Inline styles for the smooth marquee animation */}
+        <style>{`
+          @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-scroll {
+            animation: scroll 35s linear infinite;
+          }
+          .animate-scroll:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
 
         {/* Navbar */}
         <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-slate-950/80 border-b border-slate-800">
@@ -16,20 +45,25 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <Shield className="w-8 h-8 text-cyan-400" />
                 <span className="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">
-                ArtiqVPN
-              </span>
+                  ArtiqVPN
+                </span>
               </div>
 
               {/* Desktop CTA */}
-              <div className="hidden md:flex">
+              <div className="hidden md:flex items-center gap-4">
                 <a
-                    href={TELEGRAM_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={CHANNEL_LINK}
+                    className="text-slate-400 hover:text-cyan-400 font-medium transition-colors flex items-center gap-2 text-sm"
+                >
+                  <Megaphone className="w-4 h-4" />
+                  کانال ما
+                </a>
+                <a
+                    href={BOT_LINK}
                     className="flex items-center gap-2 px-6 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-cyan-500/50 text-white rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
                 >
                   <Headphones className="w-4 h-4" />
-                  <span className="text-sm font-semibold">ارتباط با پشتیبانی</span>
+                  <span className="text-sm font-semibold">ارتباط با ربات</span>
                 </a>
               </div>
 
@@ -49,11 +83,18 @@ export default function App() {
           {isMobileMenuOpen && (
               <div className="md:hidden bg-slate-900 border-b border-slate-800 px-4 py-4 space-y-4">
                 <a
-                    href={TELEGRAM_LINK}
+                    href={CHANNEL_LINK}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  <Megaphone className="w-5 h-5" />
+                  عضویت در کانال
+                </a>
+                <a
+                    href={BOT_LINK}
                     className="flex items-center justify-center gap-2 w-full py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-colors"
                 >
-                  <Headphones className="w-5 h-5" />
-                  ارتباط با پشتیبانی
+                  <Send className="w-5 h-5" />
+                  خرید از ربات
                 </a>
               </div>
           )}
@@ -61,12 +102,15 @@ export default function App() {
 
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-4 overflow-hidden">
+          {/* Subtle Grid Background Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none"></div>
+
           {/* Neon Glow Background Effects */}
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-cyan-500/20 blur-[120px] rounded-full pointer-events-none"></div>
           <div className="absolute top-1/2 right-0 w-64 h-64 bg-violet-600/20 blur-[100px] rounded-full pointer-events-none"></div>
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-cyan-400 text-sm font-medium mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 text-cyan-400 text-sm font-medium mb-8 backdrop-blur-sm">
               <Activity className="w-4 h-4" />
               <span>آپتایم ۹۹.۹٪ • اتصال پایدار و بدون قطعی</span>
             </div>
@@ -77,29 +121,66 @@ export default function App() {
             </h1>
 
             <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-              دسترسی بدون مرز به اینترنت آزاد، همراه با بالاترین سطح امنیت و حریم خصوصی. سرورهای بهینه‌شده برای ترید، گیمینگ و استریم با پایین‌ترین پینگ ممکن.
+              دسترسی بدون مرز به اینترنت آزاد، همراه با بالاترین سطح امنیت و حریم خصوصی. سرورهای بهینه‌شده برای ترید، گیمینگ و استریم در +۲۰ لوکیشن.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                   href="#pricing"
-                  className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transform hover:-translate-y-1"
+                  className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transform hover:-translate-y-1 text-center"
               >
                 مشاهده تعرفه‌ها
               </a>
-              <a
-                  href={TELEGRAM_LINK}
-                  className="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <Send className="w-5 h-5" />
-                ربات تلگرام
-              </a>
+              <div className="flex w-full sm:w-auto gap-2">
+                <a
+                    href={BOT_LINK}
+                    className="flex-1 sm:flex-none px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <Send className="w-5 h-5 text-cyan-400" />
+                  ربات ما
+                </a>
+                <a
+                    href={CHANNEL_LINK}
+                    className="flex-1 sm:flex-none px-6 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <Megaphone className="w-5 h-5 text-violet-400" />
+                  کانال
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Global Network Marquee */}
+        <section className="py-10 bg-slate-900/50 border-y border-slate-800/50 overflow-hidden relative">
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-slate-950 to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-slate-950 to-transparent z-10"></div>
+
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Globe className="w-5 h-5 text-slate-400" />
+            <span className="text-slate-400 text-sm font-medium tracking-wide">پشتیبانی از +۲۰ لوکیشن قدرتمند در سراسر جهان</span>
+          </div>
+
+          <div className="flex w-full" dir="ltr">
+            <div className="flex w-[200%] animate-scroll">
+              {/* Render lists twice for seamless infinite scrolling */}
+              {[...multiLocations, ...multiLocations].map((loc, idx) => (
+                  <div key={`${loc.id}-${idx}`} className="flex flex-col items-center justify-center min-w-[100px] gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-default">
+                    <img
+                        src={`https://flagcdn.com/w80/${loc.id}.png`}
+                        alt={loc.name}
+                        className="w-10 h-10 object-cover rounded-full border-2 border-slate-700/50 shadow-lg"
+                        loading="lazy"
+                    />
+                    <span className="text-xs text-slate-500 font-medium">{loc.name}</span>
+                  </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-4 bg-slate-900/30 border-y border-slate-800/50">
+        <section className="py-20 px-4 bg-slate-950">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">چرا ArtiqVPN؟</h2>
@@ -142,7 +223,7 @@ export default function App() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="py-24 px-4 relative">
+        <section id="pricing" className="py-24 px-4 relative bg-slate-900/20 border-t border-slate-800/50">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-black text-white mb-6">تعرفه‌های اشتراک</h2>
@@ -151,7 +232,7 @@ export default function App() {
 
             {/* Volume Plans */}
             <div className="mb-20">
-              <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center gap-4 mb-10">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent to-slate-700"></div>
                 <h3 className="text-2xl font-bold text-white text-center px-4">بسته‌های اختصاصی و پرسرعت</h3>
                 <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-700"></div>
@@ -163,14 +244,16 @@ export default function App() {
                     volume="10GB"
                     duration="۳۰ روزه"
                     price="۴۰,۰۰۰"
-                    features={["تک کاربره", "سرورهای آلمان و هلند", "پشتیبانی استاندارد"]}
+                    locations={multiLocations}
+                    features={["تک کاربره", "پشتیبانی استاندارد", "مناسب وب‌گردی"]}
                 />
                 <PricingCard
                     name="بسته بهینه"
                     volume="20GB"
                     duration="۳۰ روزه"
                     price="۷۰,۰۰۰"
-                    features={["دو کاربره", "تمامی سرورها", "پینگ ویژه گیمینگ", "پشتیبانی اولویت‌دار"]}
+                    locations={multiLocations}
+                    features={["دو کاربره", "پینگ ویژه گیمینگ", "پشتیبانی اولویت‌دار"]}
                     isPopular={true}
                 />
                 <PricingCard
@@ -178,14 +261,15 @@ export default function App() {
                     volume="50GB"
                     duration="۶۰ روزه"
                     price="۱۵۰,۰۰۰"
-                    features={["سه کاربره", "تمامی سرورها", "پهنای باند اختصاصی", "پشتیبانی VIP"]}
+                    locations={multiLocations}
+                    features={["سه کاربره", "پهنای باند اختصاصی", "پشتیبانی VIP"]}
                 />
               </div>
             </div>
 
             {/* Unlimited Plans */}
             <div>
-              <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center gap-4 mb-10">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent to-violet-700"></div>
                 <div className="flex flex-col items-center">
                   <span className="bg-violet-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-2 uppercase tracking-widest shadow-[0_0_10px_rgba(124,58,237,0.5)]">Special</span>
@@ -200,7 +284,8 @@ export default function App() {
                     volume="نامحدود"
                     duration="۳۰ روزه"
                     price="۲۵۰,۰۰۰"
-                    features={["دو کاربره", "سرورهای آلمان و هلند", "بدون افت سرعت", "مناسب استریم و دانلود"]}
+                    locations={twoLocations}
+                    features={["دو کاربره", "بدون افت سرعت", "مناسب استریم و دانلود"]}
                     accentColor="violet"
                 />
                 <PricingCard
@@ -208,7 +293,8 @@ export default function App() {
                     volume="نامحدود"
                     duration="۶۰ روزه"
                     price="۳۵۰,۰۰۰"
-                    features={["دو کاربره", "تمامی لوکیشن‌ها", "بهترین ارزش خرید", "بدون افت سرعت", "مناسب استریم و دانلود"]}
+                    locations={twoLocations}
+                    features={["دو کاربره", "بهترین ارزش خرید", "بدون افت سرعت", "مناسب استریم و دانلود"]}
                     isBestValue={true}
                     accentColor="violet"
                 />
@@ -231,23 +317,32 @@ export default function App() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400">
-              <Activity className="w-3 h-3 text-emerald-400" />
-              آپتایم ۹۹.۹٪
-            </span>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400">
-              <Shield className="w-3 h-3 text-cyan-400" />
-              امنیت تضمین شده
-            </span>
+                <Activity className="w-3 h-3 text-emerald-400" />
+                آپتایم ۹۹.۹٪
+              </span>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400">
+                <Shield className="w-3 h-3 text-cyan-400" />
+                امنیت تضمین شده
+              </span>
             </div>
 
-            <a
-                href={TELEGRAM_LINK}
-                className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 text-sm font-medium"
-            >
-              <Send className="w-4 h-4" />
-              @ArtiqVPN_Bot
-            </a>
+            <div className="flex items-center justify-center gap-6">
+              <a
+                  href={BOT_LINK}
+                  className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 text-sm font-medium"
+              >
+                <Send className="w-4 h-4" />
+                @ArtiqVPN_Bot
+              </a>
+              <a
+                  href={CHANNEL_LINK}
+                  className="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-2 text-sm font-medium"
+              >
+                <Megaphone className="w-4 h-4" />
+                @ArtiqVPN
+              </a>
+            </div>
           </div>
         </footer>
       </div>
@@ -270,7 +365,7 @@ function FeatureCard({ icon, title, description }) {
   );
 }
 
-function PricingCard({ name, volume, duration, price, features, isPopular, isBestValue, accentColor = "cyan" }) {
+function PricingCard({ name, volume, duration, price, features, locations, isPopular, isBestValue, accentColor = "cyan" }) {
   const isViolet = accentColor === "violet";
   const glowShadow = isViolet
       ? "shadow-[0_0_30px_rgba(139,92,246,0.15)] hover:shadow-[0_0_40px_rgba(139,92,246,0.3)]"
@@ -281,29 +376,57 @@ function PricingCard({ name, volume, duration, price, features, isPopular, isBes
       ? "bg-violet-600 hover:bg-violet-500 text-white"
       : isPopular
           ? "bg-cyan-500 hover:bg-cyan-400 text-slate-950"
-          : "bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white";
+          : "bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white hover:border-cyan-500/50";
+
+  // Logic to display up to 5 flags, and a counter for the rest
+  const displayFlags = locations.slice(0, 5);
+  const remainingFlagsCount = locations.length - 5;
 
   return (
       <div className={`relative flex flex-col p-8 bg-slate-900 rounded-3xl border ${borderColor} transition-all duration-300 ${glowShadow} transform hover:-translate-y-2`}>
 
         {isPopular && (
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold rounded-full">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold rounded-full whitespace-nowrap">
               محبوب‌ترین
             </div>
         )}
         {isBestValue && (
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold rounded-full">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-xs font-bold rounded-full whitespace-nowrap">
               بهترین ارزش خرید
             </div>
         )}
 
-        <div className="mb-8 border-b border-slate-800 pb-8 text-center">
+        <div className="mb-6 border-b border-slate-800 pb-8 text-center">
           <h4 className="text-xl font-medium text-slate-300 mb-2">{name}</h4>
-          <div className="flex items-center justify-center gap-2 mb-2 font-black">
+          <div className="flex items-center justify-center gap-2 mb-4 font-black">
             <span className="text-5xl text-white">{volume}</span>
             <span className="text-lg text-slate-400 mt-3 font-medium">/ {duration}</span>
           </div>
-          <div className="text-cyan-400 font-bold text-xl mt-4">
+
+          {/* Overlapping Flags UI */}
+          <div className="flex flex-col items-center gap-2 mt-4 bg-slate-950/50 py-2 rounded-xl border border-slate-800/50">
+            <span className="text-xs text-slate-400 font-medium">
+              {locations.length > 2 ? 'دسترسی به تمامی سرورها' : 'سرورهای آلمان و هلند'}
+            </span>
+            <div className="flex items-center justify-center -space-x-2 space-x-reverse" dir="ltr">
+              {displayFlags.map((loc) => (
+                  <img
+                      key={loc.id}
+                      src={`https://flagcdn.com/w40/${loc.id}.png`}
+                      alt={loc.name}
+                      title={loc.name}
+                      className="w-7 h-7 rounded-full border-2 border-slate-900 object-cover"
+                  />
+              ))}
+              {remainingFlagsCount > 0 && (
+                  <div className="w-7 h-7 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center z-10">
+                    <span className="text-[10px] font-bold text-slate-300">+{remainingFlagsCount}</span>
+                  </div>
+              )}
+            </div>
+          </div>
+
+          <div className="text-cyan-400 font-bold text-xl mt-6">
             {price} <span className="text-sm font-normal text-slate-400">تومان</span>
           </div>
         </div>
@@ -318,7 +441,7 @@ function PricingCard({ name, volume, duration, price, features, isPopular, isBes
         </ul>
 
         <a
-            href={TELEGRAM_LINK}
+            href={BOT_LINK}
             className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all duration-300 ${buttonBg}`}
         >
           <Send className="w-5 h-5" />
