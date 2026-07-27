@@ -283,7 +283,7 @@ export default function App() {
                     name="نامحدود ۱ ماهه"
                     volume="نامحدود"
                     duration="۳۰ روزه"
-                    price="۲۵۰,۰۰۰"
+                    price="۱۹۹,۰۰۰"
                     locations={twoLocations}
                     features={["دو کاربره", "بدون افت سرعت", "مناسب استریم و دانلود"]}
                     accentColor="violet"
@@ -292,7 +292,7 @@ export default function App() {
                     name="نامحدود ۲ ماهه"
                     volume="نامحدود"
                     duration="۶۰ روزه"
-                    price="۳۵۰,۰۰۰"
+                    price="۲۹۹,۰۰۰"
                     locations={twoLocations}
                     features={["دو کاربره", "بهترین ارزش خرید", "بدون افت سرعت", "مناسب استریم و دانلود"]}
                     isBestValue={true}
